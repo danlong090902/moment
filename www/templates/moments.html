@@ -1,0 +1,69 @@
+<ion-view view-title="车友圈">
+	<ion-nav-buttons side="right">
+		<button class="button  button-icon icon" ng-click="takePicture()">
+			<img src="img/friendcircle-camera.svg" alt="">
+		</button>
+	</ion-nav-buttons>
+	<ion-content class="">
+		<div class="head">
+			<!-- 背景图 -->
+			<img class="banner" src="img/friendcircle-banner.png" alt="">
+			<!-- 个人信息区域 -->
+			<div class="user-info">
+				<span class="name">{{userName}}</span>
+				<span class="portrait-container">
+					<img class="portrait" src="img/portrait.jpg" alt="">
+					<i class="icon ion-record new" ng-show="hasNew.length > 0"></i>
+				</span>
+			</div>
+		</div>
+		<section>
+			<div class="lists row" ng-repeat="(key, value) in data">
+				<img class="portrait col" src="img/portrait.jpg" alt="">
+				<section class="col">
+					<h3>{{value.name}}</h3>
+					<!-- 文字区 -->
+					<div class="text" ng-if="value.text != false">
+						{{value.text}}
+					</div>
+					<!-- 分享区域 -->
+					<div class="share-container" ng-if="value.share != false">
+						<img class="portrait" ng-src="{{value.share.img}}" alt="">
+						<span class="title" ng-class="{'one-line':{{value.share.text.length < 16}}}">{{value.share.text}}</span>
+					</div>
+					<!-- 图片区域 -->
+					<div class="pic-container" ng-if="value.picture != false" ng-init="picArrLen=value.picture.length">
+						<img ng-repeat="picsrc in value.picture" ng-class="{'pic1':{{picArrLen ==1}},'pic4':{{picArrLen ==4}},'pic7':{{picArrLen >6}}}" ng-src="{{picsrc}}" alt="">
+					</div>
+					<!-- 点赞 评论 删除状态区域 -->
+					<div class="state-container">
+						<!-- <img src="../img/state-thumbs-up.svg" alt="" ng-click="onFavorClick()"> -->
+						<span  ng-click="onPraiseClick()"><i class="icon img {{value.favourIco}}"></i><span class="funText">{{value.favour}}
+												</span></span>
+						<img class="img"  src="img/state-comment.svg" alt=""><span class="funText">评论
+						</span>
+						<span ng-show="{{value.name == userName}}"><img class="img" src="img/state-delete.svg" alt="" ><span class="funText">删除
+												</span></span>
+					</div>
+					<!-- 发送时间 -->
+					<div class="send-time">
+						{{value.time}}
+					</div>
+					<!-- 评论区 -->
+					<div class="comment-container" ng-if="value.comments != false">
+						<li ng-repeat="comment in value.comments | limitTo:value.comShowNum"><span class="name">{{comment.sender}}</span>: <span class="content">{{comment.content}}</span></li>
+					</div>
+					<!-- 评论操作区域 -->
+					<div class="comment-all"  ng-click="onCommentShowClick(value.comments.length)" ng-show="{{value.comments != false && value.comments.length > 3}}">
+						<!-- <span ng-show="value.comShowNum ==3">{{viewAllTextHead+$scope.viewAllTextMid+viewAllTextEnd}}</span> -->
+						<span ng-show="value.comShowNum ==3">查看全部{{value.comments.length}}条评论</span>
+						<span ng-show="value.comShowNum !=3">收起</span>
+						<i class="icon" ng-class="{'ion-ios-arrow-down': value.comShowNum==3,'ion-ios-arrow-up': value.comShowNum!=3}"></i>
+					</div>
+				</section>
+			</div>
+		</section>
+		<div class="list">
+		</div>
+	</ion-content>
+</ion-view>
